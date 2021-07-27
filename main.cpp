@@ -1,20 +1,18 @@
 #include "main.h"
+ // 1, 10 & 11,20
 
+
+pros::Motor leftBack(20, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor rightBack(11, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor leftFront(10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor rightFront(1, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
 /**
  * A callback function for LLEMU's center button.
  *
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
  */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -26,7 +24,7 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
+	//pros::lcd::register_btn1_cb(on_center_button);
 }
 
 /**
@@ -73,7 +71,20 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+void drivetrain(int left, int right) {
+	leftBack = left;
+	leftFront = left;
+	rightBack = right;
+	rightFront = right;
+}
 void opcontrol() {
+	while (true) {
+		pros::delay(10); //motors update every 10 mm
+		int leftJoystick = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+		int rightJoystick = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+	}
 	
 
 }
+
